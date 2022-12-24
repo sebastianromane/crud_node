@@ -47,3 +47,26 @@ app.delete("/canciones/:id", async (req, res) => {
     await fsPromises.writeFile("repertorio.json", JSON.stringify(repertorios))
     res.send("Repertorio eliminado con éxito")
 })
+
+app.put("/canciones/:id", async (req, res) => {
+    const { id } = req.params
+    const repertorio = req.body
+
+    if (repertorio.titulo === "") {
+        return
+       }
+   
+    if (repertorio.artista === "") {
+            return
+           }
+       
+    if (repertorio.tono === "") {
+           return
+           }
+
+    const repertorios = JSON.parse(await fsPromises.readFile("./repertorio.json" , 'utf8'));
+    const index = repertorios.findIndex(p => p.id == id)
+    repertorios[index] = repertorio
+    await fsPromises.writeFile("repertorio.json", JSON.stringify(repertorios))
+    res.send("Repertorio modificado con éxito")
+})
