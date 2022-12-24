@@ -39,3 +39,11 @@ app.post("/canciones", async (req, res) => {
 })
 
 
+app.delete("/canciones/:id", async (req, res) => {
+    const { id } = req.params
+    const repertorios = JSON.parse(await fsPromises.readFile("./repertorio.json" , 'utf8'));
+    const index = repertorios.findIndex(p => p.id == id)
+    repertorios.splice(index, 1)
+    await fsPromises.writeFile("repertorio.json", JSON.stringify(repertorios))
+    res.send("Repertorio eliminado con éxito")
+})
