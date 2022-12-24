@@ -18,3 +18,24 @@ app.get("/canciones", async (req, res) => {
     res.json(repertorios) 
 })
 
+app.post("/canciones", async (req, res) => {
+    const repertorio = req.body
+    if (repertorio.titulo === "") {
+     return
+    }
+
+    if (repertorio.artista === "") {
+         return
+        }
+    
+    if (repertorio.tono === "") {
+        return
+        }
+
+    const repertorios = JSON.parse(await fsPromises.readFile("./repertorio.json" , 'utf8'));
+    repertorios.push(repertorio)
+    await fsPromises.writeFile("repertorio.json", JSON.stringify(repertorios))
+    res.send("Repertorio agregado con éxito!")
+})
+
+
